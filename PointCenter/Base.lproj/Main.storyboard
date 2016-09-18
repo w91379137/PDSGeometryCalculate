@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="PointCenter" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ax6-i1-R8E" customClass="LocationIndicatorView" customModule="PointCenter" customModuleProvider="target">
+                                <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="DQX-vZ-HbQ"/>
+                                    <constraint firstAttribute="width" constant="50" id="o2G-wb-4cE"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bSe-OR-jaK" customClass="LocationIndicatorView" customModule="PointCenter" customModuleProvider="target">
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="1" alpha="0.5" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="1W8-pG-iKo"/>
+                                    <constraint firstAttribute="height" constant="50" id="J8L-Ys-B6r"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U44-ms-JcM" customClass="LocationIndicatorView" customModule="PointCenter" customModuleProvider="target">
+                                <color key="backgroundColor" red="0.0" green="1" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="N72-In-ARP"/>
+                                    <constraint firstAttribute="width" constant="50" id="U2t-Fe-ssw"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="ax6-i1-R8E" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" multiplier="0.3" id="6ae-eN-eLa"/>
+                            <constraint firstItem="U44-ms-JcM" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="IJm-N4-4Bh"/>
+                            <constraint firstItem="U44-ms-JcM" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="1.7" id="N9K-oo-Ket"/>
+                            <constraint firstItem="ax6-i1-R8E" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="0.3" id="WDf-Gj-LII"/>
+                            <constraint firstItem="bSe-OR-jaK" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="jcg-uq-9h5"/>
+                            <constraint firstItem="bSe-OR-jaK" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" multiplier="1.8" id="sOa-1y-nIO"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="blueView" destination="bSe-OR-jaK" id="Azp-qH-iwv"/>
+                        <outlet property="greenView" destination="U44-ms-JcM" id="MXl-fO-CPH"/>
+                        <outlet property="redView" destination="ax6-i1-R8E" id="u5g-hF-I65"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="79" y="103"/>
+        </scene>
+    </scenes>
+</document>
