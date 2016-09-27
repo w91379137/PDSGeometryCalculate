@@ -179,13 +179,13 @@ extension CGPoint {
             else { angleA += CGFloat(2 * M_PI) }
         }
         
-        var weightA = CGFloat(0)
-        var weightB = weightsSum
+        var weightA = weightsSum
+        var weightB = CGFloat(0)
         for (index, weight) in weights.enumerated() {
             if index != weights.count - 1 {
                 
-                weightA += weight
-                weightB -= weight
+                weightA -= weight
+                weightB += weight
                 
                 let angle =
                     angleA * weightA / weightsSum +
@@ -194,6 +194,46 @@ extension CGPoint {
                 points.append(CGPoint.clockwiseRotate(center: center,
                                                       radius: distants,
                                                       angle: angle))
+            }
+        }
+        
+        return points
+    }
+    
+    static func splitPointOnLine(pointA : CGPoint,
+                                 pointB : CGPoint,
+                                 weights : [CGFloat]) -> [CGPoint] {
+        
+        //檢查數目
+        if weights.count <= 1 {
+            return []
+        }
+        
+        //檢查權重總和
+        var weightsSum = CGFloat(0)
+        for weight in weights {
+            weightsSum += weight
+        }
+        if weightsSum == 0 {
+            return []
+        }
+        
+        var points = [CGPoint]()
+        
+        var weightA = weightsSum
+        var weightB = CGFloat(0)
+        for (index, weight) in weights.enumerated() {
+            if index != weights.count - 1 {
+                
+                weightA -= weight
+                weightB += weight
+                
+                let scaleA = weightA / weightsSum
+                let scaleB = weightB / weightsSum
+                
+                let point = CGPoint(x: pointA.x * scaleA + pointB.x * scaleB,
+                                    y: pointA.y * scaleA + pointB.y * scaleB)
+                points.append(point)
             }
         }
         
