@@ -24,7 +24,11 @@ extension CGPoint {
     
     static func distants(_ pointA : CGPoint,
                          _ pointB : CGPoint) -> CGFloat {
-        return sqrt(pow(pointA.x - pointB.x, 2) + pow(pointA.y - pointB.y, 2))
+        return CGPoint.vector(pointA, pointB).length()
+    }
+    
+    func length() -> CGFloat {
+        return sqrt(pow(self.x , 2) + pow(self.y , 2))
     }
     
     static func switchXY(_ vector : CGPoint) -> CGPoint {
