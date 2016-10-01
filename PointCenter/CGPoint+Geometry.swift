@@ -267,3 +267,6 @@ extension CGPoint {
         return points
     }
 }
+
+//TODO: 需要 A C B  AC間幾等份 CB間幾等份 的分法
+//TODO: 分離出兩線 點斜式 求解
