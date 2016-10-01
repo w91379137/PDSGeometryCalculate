@@ -155,6 +155,29 @@ extension CGPoint {
                                 pointB : CGPoint,
                                 center : CGPoint,
                                 weights : [CGFloat],
+                                sameSide pointC : CGPoint) -> [CGPoint] {
+        
+        let angleA = CGPoint.clockwiseAngle(center: center, point: pointA)
+        let angleB = CGPoint.clockwiseAngle(center: center, point: pointB)
+        let angleC = CGPoint.clockwiseAngle(center: center, point: pointC)
+        
+        let smallAngle = min(angleA, angleB)
+        let bigAngle = max(angleA, angleB)
+        
+        let isBetweenSmallBigAngle = angleC > smallAngle && angleC < bigAngle
+        let isBetweenAngleLessThanPI = (bigAngle - smallAngle) < CGFloat(M_PI)
+        
+        return splitPointOnArc(pointA : pointA,
+                               pointB : pointB,
+                               center : center,
+                               weights : weights,
+                               isOnSmallSide : (isBetweenSmallBigAngle == isBetweenAngleLessThanPI))
+    }
+    
+    static func splitPointOnArc(pointA : CGPoint,
+                                pointB : CGPoint,
+                                center : CGPoint,
+                                weights : [CGFloat],
                                 isOnSmallSide : Bool = true) -> [CGPoint] {
         
         //檢查數目
