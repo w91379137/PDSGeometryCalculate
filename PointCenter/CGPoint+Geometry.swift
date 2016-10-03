@@ -180,23 +180,6 @@ extension CGPoint {
                                 weights : [CGFloat],
                                 isOnSmallSide : Bool = true) -> [CGPoint] {
         
-        //檢查數目
-        if weights.count <= 1 {
-            return []
-        }
-        
-        //檢查權重總和
-        var weightsSum = CGFloat(0)
-        for weight in weights {
-            weightsSum += weight
-        }
-        if weightsSum == 0 {
-            return []
-        }
-        
-        var points = [CGPoint]()
-        
-        let distants = sqrt(pow(center.x - pointA.x, 2) + pow(center.y - pointA.y, 2))
         var angleA = CGPoint.clockwiseAngle(center: center, point: pointA)
         let angleB = CGPoint.clockwiseAngle(center: center, point: pointB)
         
@@ -206,22 +189,16 @@ extension CGPoint {
             else { angleA += CGFloat(2 * M_PI) }
         }
         
-        var weightA = weightsSum
-        var weightB = CGFloat(0)
-        for (index, weight) in weights.enumerated() {
-            if index != weights.count - 1 {
-                
-                weightA -= weight
-                weightB += weight
-                
-                let angle =
-                    angleA * weightA / weightsSum +
-                        angleB * weightB / weightsSum
-                
-                points.append(CGPoint.clockwiseRotate(center: center,
-                                                      radius: distants,
-                                                      angle: angle))
-            }
+        var points = [CGPoint]()
+        let values = CGFloat.splitValue(valueA: angleA,
+                                        valueB: angleB,
+                                        weights: weights)
+        
+        let radius = CGPoint.distants(pointA, center)
+        for value in values {
+            points.append(CGPoint.clockwiseRotate(center: center,
+                                                  radius: radius,
+                                                  angle: value))
         }
         
         return points
@@ -231,12 +208,85 @@ extension CGPoint {
                                  pointB : CGPoint,
                                  weights : [CGFloat]) -> [CGPoint] {
         
-        //檢查數目
-        if weights.count <= 1 {
-            return []
+        
+        let values = CGFloat.splitValue(valueA: 1, valueB: 0, weights: weights)
+        var points = [CGPoint]()
+        
+        for value in values {
+            points.append(CGPoint(x: pointA.x * value + pointB.x * (1 - value),
+                                  y: pointA.y * value + pointB.y * (1 - value)))
         }
         
-        //檢查權重總和
+        return points
+    }
+    
+    static func splitPointOnArc(pointA : CGPoint,
+                                pointB : CGPoint,
+                                pointC : CGPoint,
+                                center : CGPoint,
+                                weightsAC : [CGFloat],
+                                weightsCB : [CGFloat]) -> ([CGPoint], [CGPoint]) {
+        
+        //目標 C 在 A 在 B 中間
+        var angleA = CGPoint.clockwiseAngle(center: center, point: pointA)
+        var angleB = CGPoint.clockwiseAngle(center: center, point: pointB)
+        let angleC = CGPoint.clockwiseAngle(center: center, point: pointC)
+        
+        if angleC < angleA && angleC < angleB {
+            //CAB
+            //CBA
+            if angleA > angleB {
+                angleA -= CGFloat(2 * M_PI)
+            }
+            else {
+                angleB -= CGFloat(2 * M_PI)
+            }
+        }
+        else if angleC > angleA && angleC > angleB {
+            //ABC
+            //BAC
+            if angleA > angleB {
+                angleB += CGFloat(2 * M_PI)
+            }
+            else {
+                angleA += CGFloat(2 * M_PI)
+            }
+        }
+        
+        let radius = CGPoint.distants(pointA, center)
+        
+        var pointsAC = [CGPoint]()
+        let valuesAC = CGFloat.splitValue(valueA: angleA,
+                                          valueB: angleC,
+                                          weights: weightsAC)
+        
+        for value in valuesAC {
+            pointsAC.append(CGPoint.clockwiseRotate(center: center,
+                                                    radius: radius,
+                                                    angle: value))
+        }
+        
+        var pointsCB = [CGPoint]()
+        let valuesCB = CGFloat.splitValue(valueA: angleC,
+                                          valueB: angleB,
+                                          weights: weightsCB)
+        
+        for value in valuesCB {
+            pointsCB.append(CGPoint.clockwiseRotate(center: center,
+                                                    radius: radius,
+                                                    angle: value))
+        }
+        
+        return (pointsAC, pointsCB)
+    }
+}
+
+extension CGFloat {
+    
+    static func splitValue(valueA : CGFloat,
+                           valueB : CGFloat,
+                           weights : [CGFloat]) -> [CGFloat] {
+        
         var weightsSum = CGFloat(0)
         for weight in weights {
             weightsSum += weight
@@ -245,7 +295,7 @@ extension CGPoint {
             return []
         }
         
-        var points = [CGPoint]()
+        var values = [CGFloat]()
         
         var weightA = weightsSum
         var weightB = CGFloat(0)
@@ -258,15 +308,12 @@ extension CGPoint {
                 let scaleA = weightA / weightsSum
                 let scaleB = weightB / weightsSum
                 
-                let point = CGPoint(x: pointA.x * scaleA + pointB.x * scaleB,
-                                    y: pointA.y * scaleA + pointB.y * scaleB)
-                points.append(point)
+                values.append(valueA * scaleA + valueB * scaleB)
             }
         }
         
-        return points
+        return values
     }
 }
 
-//TODO: 需要 A C B  AC間幾等份 CB間幾等份 的分法
 //TODO: 分離出兩線 點斜式 求解
