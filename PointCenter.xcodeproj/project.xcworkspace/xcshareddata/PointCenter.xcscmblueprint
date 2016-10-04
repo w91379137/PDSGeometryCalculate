@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "9986F97A8EE1880FE0DA156BEE9FDA42292DA4B2",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "9986F97A8EE1880FE0DA156BEE9FDA42292DA4B2" : 9223372036854775807,
+    "6F9CEB7005A74E6DB4361349EA0712A634CBBAAF" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "87C56A01-700D-47B0-8E37-E654B5CF3243",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "9986F97A8EE1880FE0DA156BEE9FDA42292DA4B2" : "PDSGeometryCalculate\/",
+    "6F9CEB7005A74E6DB4361349EA0712A634CBBAAF" : "..\/.."
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "PointCenter",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "PointCenter.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:spe3d\/SPELandMarkControl.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "6F9CEB7005A74E6DB4361349EA0712A634CBBAAF"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:w91379137\/PDSGeometryCalculate.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "9986F97A8EE1880FE0DA156BEE9FDA42292DA4B2"
+    }
+  ]
+}

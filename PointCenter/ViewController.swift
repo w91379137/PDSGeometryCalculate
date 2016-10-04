@@ -123,14 +123,12 @@ class ViewController: UIViewController, LocationIndicatorViewDelegate {
     
     //MARK: - Notification
     func updateSourcePointAction() {
-        let (center, radius) =
-            CGPoint.getCircle(redPoint, bluePoint, greenPoint)
+        let center = CGPoint.findCircle(redPoint, bluePoint, greenPoint)
         
-        if let center = center,
-            let radius = radius {
+        if let center = center {
             
             self.circleCenterPoint = center
-            self.circleRadius = radius
+            self.circleRadius = CGPoint.distance(redPoint, center)
             
             self.rbMidPoint =
                 CGPoint.midPointOnArc(pointA: redPoint,

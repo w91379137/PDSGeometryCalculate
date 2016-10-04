@@ -22,7 +22,7 @@ extension CGPoint {
                        y: pointB.y - pointA.y)
     }
     
-    static func distants(_ pointA : CGPoint,
+    static func distance(_ pointA : CGPoint,
                          _ pointB : CGPoint) -> CGFloat {
         return CGPoint.vector(pointA, pointB).length()
     }
@@ -39,59 +39,73 @@ extension CGPoint {
         return CGPoint(x: vector.y, y: -vector.x)
     }
     
-    static func getCircle(_ pointA : CGPoint,
-                          _ pointB : CGPoint,
-                          _ pointC : CGPoint) -> (CGPoint?, CGFloat?){
+    func offsetBy(x: CGFloat, y: CGFloat) -> CGPoint {
+        return CGPoint(x: self.x + x, y: self.y + y)
+    }
+    
+    //MARK: - 解方程組
+    static func findCircle(_ pointA : CGPoint,
+                           _ pointB : CGPoint,
+                           _ pointC : CGPoint) -> CGPoint? {
         
-        var vBA = CGPoint.vertical(CGPoint.vector(pointB, pointA))
+        let vBA = CGPoint.vertical(CGPoint.vector(pointB, pointA))
         let mBA = CGPoint.midPoint(pointA, pointB)
         
-        var vCA = CGPoint.vertical(CGPoint.vector(pointC, pointA))
+        let vCA = CGPoint.vertical(CGPoint.vector(pointC, pointA))
         let mCA = CGPoint.midPoint(pointC, pointA)
         
-        var d = CGPoint.vector(mBA, mCA)
+        return CGPoint.findSolution(lineV1: vBA, p1: mBA,
+                                    lineV2: vCA, p2: mCA)
+    }
+    
+    static func findSolution(lineV1: CGPoint,
+                             p1: CGPoint,
+                             lineV2: CGPoint,
+                             p2: CGPoint) -> CGPoint? {
+        
+        var v1 = lineV1
+        var v2 = lineV2
+        
+        var d = CGPoint.vector(p1, p2)
         
         /*
          解 k h
-         k * vBA + mBA = h * vCA + mCA
+         k * v1 + p1 = h * v2 + p2
          
          解 k h
-         k * vBA = h * vCA + d
+         k * v1 = h * v2 + d
          */
         
-        //目標使 v31.x = 0
-        if vCA.x == 0 {
+        //目標使 v2.x = 0
+        if v2.x == 0 {
             //不用動作
         }
-        else if vCA.y == 0 {
+        else if v2.y == 0 {
             //交換
-            vBA = CGPoint.switchXY(vBA)
-            vCA = CGPoint.switchXY(vCA)
+            v1 = CGPoint.switchXY(v1)
+            v2 = CGPoint.switchXY(v2)
             d = CGPoint.switchXY(d)
         }
         else {
             //相減
-            let s = vCA.x / vCA.y
-            vBA = CGPoint(x: vBA.x - vBA.y * s, y: vBA.y)
-            vCA = CGPoint(x: vCA.x - vCA.y * s, y: vCA.y)
+            let s = v2.x / v2.y
+            v1 = CGPoint(x: v1.x - v1.y * s, y: v1.y)
+            v2 = CGPoint(x: v2.x - v2.y * s, y: v2.y)
             d = CGPoint(x: d.x - d.y * s, y: d.y)
         }
         
-        if vBA.x != 0 {
-            let k = d.x / vBA.x
-            let v = CGPoint.vertical(CGPoint.vector(pointB, pointA))
-            
-            let center = CGPoint(x: mBA.x + k * v.x,
-                                 y: mBA.y + k * v.y)
-            
-            let radius = sqrt(pow(center.x - pointA.x, 2) + pow(center.y - pointA.y, 2))
-            return (center, radius)
+        if v1.x != 0 {
+            let k = d.x / v1.x
+            return CGPoint(x: p1.x + k * lineV1.x,
+                           y: p1.y + k * lineV1.y)
+
         }
         
         print("共線")
-        return (nil, nil)
+        return nil
     }
     
+    //MARK: - 極座標
     //clockwiseRotate clockwiseAngle 互為反函數
     static func clockwiseRotate(center : CGPoint,
                                 radius : CGFloat,
@@ -104,7 +118,7 @@ extension CGPoint {
     static func clockwiseAngle(center : CGPoint,
                                point : CGPoint) -> CGFloat {
         
-        let distants = CGPoint.distants(center, point)
+        let distants = CGPoint.distance(center, point)
         if distants == 0 { return 0 }//兩點重和
         
         let cosValue = (point.x - center.x) / distants
@@ -139,6 +153,8 @@ extension CGPoint {
         return angle
     }
     
+    
+    //MARK: - 分點公式
     static func midPointOnArc(pointA : CGPoint,
                               pointB : CGPoint,
                               center : CGPoint,
@@ -194,7 +210,7 @@ extension CGPoint {
                                         valueB: angleB,
                                         weights: weights)
         
-        let radius = CGPoint.distants(pointA, center)
+        let radius = CGPoint.distance(pointA, center)
         for value in values {
             points.append(CGPoint.clockwiseRotate(center: center,
                                                   radius: radius,
@@ -253,7 +269,7 @@ extension CGPoint {
             }
         }
         
-        let radius = CGPoint.distants(pointA, center)
+        let radius = CGPoint.distance(pointA, center)
         
         var pointsAC = [CGPoint]()
         let valuesAC = CGFloat.splitValue(valueA: angleA,
@@ -315,5 +331,3 @@ extension CGFloat {
         return values
     }
 }
-
-//TODO: 分離出兩線 點斜式 求解
