@@ -10,12 +10,7 @@ import UIKit
 
 extension CGPoint {
     
-    static func midPoint(_ pointA : CGPoint,
-                         _ pointB : CGPoint) -> CGPoint {
-        return CGPoint(x: (pointA.x + pointB.x) / 2,
-                       y: (pointA.y + pointB.y) / 2)
-    }
-    
+    //MARK: - 
     static func vector(_ pointA : CGPoint,
                        _ pointB : CGPoint) -> CGPoint {
         return CGPoint(x: pointB.x - pointA.x,
@@ -27,16 +22,17 @@ extension CGPoint {
         return CGPoint.vector(pointA, pointB).length()
     }
     
-    func length() -> CGFloat {
-        return sqrt(pow(self.x , 2) + pow(self.y , 2))
-    }
-    
     static func switchXY(_ vector : CGPoint) -> CGPoint {
         return CGPoint(x: vector.y, y: vector.x)
     }
     
     static func vertical(_ vector : CGPoint) -> CGPoint {
         return CGPoint(x: vector.y, y: -vector.x)
+    }
+    
+    //MARK: -
+    func length() -> CGFloat {
+        return sqrt(pow(self.x , 2) + pow(self.y , 2))
     }
     
     func offsetBy(x: CGFloat, y: CGFloat) -> CGPoint {
@@ -154,7 +150,30 @@ extension CGPoint {
     }
     
     
-    //MARK: - 分點公式
+    //MARK: - 直線分點公式
+    static func midPoint(_ pointA : CGPoint,
+                         _ pointB : CGPoint) -> CGPoint {
+        return CGPoint(x: (pointA.x + pointB.x) / 2,
+                       y: (pointA.y + pointB.y) / 2)
+    }
+    
+    static func splitPointOnLine(pointA : CGPoint,
+                                 pointB : CGPoint,
+                                 weights : [CGFloat]) -> [CGPoint] {
+        
+        
+        let values = CGFloat.splitValue(valueA: 1, valueB: 0, weights: weights)
+        var points = [CGPoint]()
+        
+        for value in values {
+            points.append(CGPoint(x: pointA.x * value + pointB.x * (1 - value),
+                                  y: pointA.y * value + pointB.y * (1 - value)))
+        }
+        
+        return points
+    }
+    
+    //MARK: - 圓弧分點公式
     static func midPointOnArc(pointA : CGPoint,
                               pointB : CGPoint,
                               center : CGPoint,
@@ -220,21 +239,7 @@ extension CGPoint {
         return points
     }
     
-    static func splitPointOnLine(pointA : CGPoint,
-                                 pointB : CGPoint,
-                                 weights : [CGFloat]) -> [CGPoint] {
-        
-        
-        let values = CGFloat.splitValue(valueA: 1, valueB: 0, weights: weights)
-        var points = [CGPoint]()
-        
-        for value in values {
-            points.append(CGPoint(x: pointA.x * value + pointB.x * (1 - value),
-                                  y: pointA.y * value + pointB.y * (1 - value)))
-        }
-        
-        return points
-    }
+    
     
     static func splitPointOnArc(pointA : CGPoint,
                                 pointB : CGPoint,
